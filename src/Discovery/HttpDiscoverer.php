@@ -25,10 +25,7 @@ final class HttpDiscoverer implements Discoverer
      */
     public function discover(string $issuerUrl): ProviderMetadata
     {
-        if (!str_ends_with($issuerUrl, '/.well-known/openid-configuration')) {
-            $issuerUrl .= '/.well-known/openid-configuration';
-        }
-
+        $issuerUrl .= '/.well-known/openid-configuration';
         $configuration = $this->sendRequest($issuerUrl);
         $jwks = $this->sendRequest($configuration['jwks_uri']);
 

@@ -85,12 +85,12 @@ final class ProviderMetadata extends Params
 
     public function introspectionEndpoint(): ?string
     {
-        $this->get(self::INTROSPECTION_ENDPOINT);
+        return $this->get(self::INTROSPECTION_ENDPOINT);
     }
 
     public function endSessionEndpoint(): ?string
     {
-        $this->get(self::END_SESSION_ENDPOINT);
+        return $this->get(self::END_SESSION_ENDPOINT);
     }
 
     public function registrationEndpoint(): ?string

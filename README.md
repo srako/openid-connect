@@ -105,9 +105,6 @@ $tokens = $client->requestTokens(
 
 See [examples](examples) for more
 
-## Change log
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
 ## Testing
 
@@ -120,10 +117,6 @@ $ composer tests    # run phpunit
 $ composer phpstan  # run phpstan
 $ composer cs       # run codesniffer
 ```
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security
 
@@ -138,5 +131,4 @@ If you discover any security related issues, please email devs@digital.cz instea
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
-[link-author]: https://github.com/digitalcz
-[link-contributors]: ../../contributors
+[link-author]: https://github.com/srako
