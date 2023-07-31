@@ -106,22 +106,6 @@ $tokens = $client->requestTokens(
 See [examples](examples) for more
 
 
-## Testing
-
-``` bash
-$ composer csfix    # fix codestyle
-$ composer checks   # run all checks 
-
-# or separately
-$ composer tests    # run phpunit
-$ composer phpstan  # run phpstan
-$ composer cs       # run codesniffer
-```
-
-## Security
-
-If you discover any security related issues, please email devs@digital.cz instead of using the issue tracker.
-
 ## Credits
 
 - [Digital Solutions s.r.o.][link-author]
