@@ -125,7 +125,6 @@ If you discover any security related issues, please email devs@digital.cz instea
 ## Credits
 
 - [Digital Solutions s.r.o.][link-author]
-- [All Contributors][link-contributors]
 
 ## License
 
