@@ -29,6 +29,9 @@ final class Json
      */
     public static function decode(string $json): array
     {
+        // the json_last_error will not reset when using JSON_THROW_ON_ERROR flag
+        \json_decode('[]');
+
         $result = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($result)) {
             throw new JsonException('Invalid JSON');
