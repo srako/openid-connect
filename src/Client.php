@@ -12,6 +12,7 @@ use Srako\OpenIDConnect\Grant\AuthorizationCode;
 use Srako\OpenIDConnect\Grant\RefreshToken;
 use Srako\OpenIDConnect\Http\AuthenticatedClient;
 use Srako\OpenIDConnect\Http\HttpClient;
+use Srako\OpenIDConnect\JOSE\Claims;
 use Srako\OpenIDConnect\JOSE\NonceChecker;
 use Srako\OpenIDConnect\Param\AuthorizationParams;
 use Srako\OpenIDConnect\Param\CallbackChecks;
@@ -49,6 +50,22 @@ final class Client
         return $this->httpClient
             ->createUri($this->getProviderMetadata()->authorizationEndpoint())
             ->withQuery($this->createAuthorizationQuery($params));
+    }
+
+    public function handleEvent(string $tokenString): Claims
+    {
+        $claimsChecks = new ClaimsChecks(
+            ['aud', 'exp', 'iat', 'iss', 'sub'],
+            [
+                new IssuerChecker([$this->getProviderMetadata()->issuer()]),
+                new AudienceChecker($this->getClientMetadata()->id()),
+                new ExpirationTimeChecker(10),
+                new IssuedAtChecker(10),
+                new NotBeforeChecker(10),
+            ],
+        );
+        $this->createTokenVerifier()->verify($tokenString, $claimsChecks);
+        return Claims::fromToken($tokenString);
     }
 
     /**
