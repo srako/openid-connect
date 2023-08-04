@@ -52,6 +52,11 @@ final class Client
             ->withQuery($this->createAuthorizationQuery($params));
     }
 
+    /**
+     * 接收JWT格式的事件通知
+     * @param string $tokenString
+     * @return Claims
+     */
     public function handleEvent(string $tokenString): Claims
     {
         $claimsChecks = new ClaimsChecks(
@@ -171,14 +176,11 @@ final class Client
      */
     public function userInfo(Tokens $tokens): array
     {
-        $userinfoEndpoint = $this->getProviderMetadata()->userinfoEndpoint();
 
-        $request = $this->httpClient
-            ->createRequest('GET', $userinfoEndpoint)
-            ->withHeader('Authorization', "Bearer {$tokens->accessToken()}");
+        $request = $this->httpClient->createRequest('GET', $this->getProviderMetadata()->userinfoEndpoint());
 
         try {
-            $response = $this->httpClient->sendRequest($request);
+            $response = $this->getAuthenticatedClient($tokens)->sendRequest($request);
         } catch (ClientExceptionInterface $e) {
             throw new AuthorizationException('Userinfo request error: ' . $e->getMessage(), 0, $e);
         }
