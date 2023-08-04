@@ -21,5 +21,8 @@ $tokens = $client->handleCallback(
     new CallbackParams($parameters),
     new CallbackChecks('foo', 'bar'),
 );
+var_dump($tokens);
 
-dump($tokens);
+
+$userinfo = $client->userInfo($tokens);
+var_dump($userinfo);

@@ -15,4 +15,4 @@ $client = ClientFactory::create($issuerUrl, $clientMetadata);
 
 $tokens = $client->requestTokens(new TokenParams(new ClientCredentials(), ['scope' => 'profile']));
 
-dump($tokens);
+var_dump($tokens);
