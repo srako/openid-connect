@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Srako\OpenIDConnect\Discovery;
 
+use Firebase\JWT\JWK;
+use Psr\Http\Client\ClientExceptionInterface;
 use Srako\OpenIDConnect\Exception\DiscoveryException;
 use Srako\OpenIDConnect\Exception\RuntimeException;
 use Srako\OpenIDConnect\Http\HttpClient;
 use Srako\OpenIDConnect\ProviderMetadata;
-use Jose\Component\Core\JWKSet;
-use Psr\Http\Client\ClientExceptionInterface;
 
 final class HttpDiscoverer implements Discoverer
 {
@@ -29,7 +29,7 @@ final class HttpDiscoverer implements Discoverer
         $configuration = $this->sendRequest($issuerUrl);
         $jwks = $this->sendRequest($configuration['jwks_uri']);
 
-        return new ProviderMetadata($configuration, JWKSet::createFromKeyData($jwks));
+        return new ProviderMetadata($configuration, JWK::parseKeySet($jwks));
     }
 
     /**

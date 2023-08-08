@@ -25,7 +25,7 @@ final class TokenVerifier implements TokenVerifierInterface
 
     public function verify(string $token, ClaimsChecks $checks): void
     {
-        $this->signatureChecker->check($token);
-        $this->claimsChecker->check(Claims::fromToken($token), $checks);
+        $payload = $this->signatureChecker->check($token);
+        $this->claimsChecker->check(Claims::fromClass($payload), $checks);
     }
 }

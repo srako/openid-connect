@@ -16,7 +16,7 @@ final class TokenVerifierFactory
         ?SignatureChecker $signatureChecker = null,
         ?ClaimsChecker $claimsChecker = null
     ): TokenVerifier {
-        $signatureChecker ??= new SignatureChecker($providerMetadata, new JOSEFactory());
+        $signatureChecker ??= new SignatureChecker($providerMetadata);
         $claimsChecker ??= new ClaimsChecker();
 
         return new TokenVerifier($signatureChecker, $claimsChecker);

@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Srako\OpenIDConnect\Util;
 
 use InvalidArgumentException;
-use Throwable;
 use UnexpectedValueException;
 
-final class JWT
+final class JWT extends \Firebase\JWT\JWT
 {
     /**
      * @return array{header: array<string, mixed>, payload: array<string, mixed>, signature: string}
@@ -25,34 +24,29 @@ final class JWT
 
         [$header, $payload, $signature] = $parts;
 
-        try {
-            $header = Json::decode(Base64Url::decode($header));
-        } catch (Throwable $e) {
-            throw new UnexpectedValueException('Invalid JWT - invalid header encoding', 0, $e);
+        $headerRaw = JWT::urlsafeB64Decode($header);
+        if (null === ($header = JWT::jsonDecode($headerRaw))) {
+            throw new UnexpectedValueException('Invalid header encoding');
         }
 
-        try {
-            $payload = Json::decode(Base64Url::decode($payload));
-        } catch (Throwable $e) {
-            throw new UnexpectedValueException('Invalid JWT - invalid payload encoding', 0, $e);
+        $payloadRaw = JWT::urlsafeB64Decode($payload);
+        if (null === ($payload = JWT::jsonDecode($payloadRaw))) {
+            throw new UnexpectedValueException('Invalid claims encoding');
         }
 
-        try {
-            $signature = Base64Url::decode($signature);
-        } catch (InvalidArgumentException $e) {
-            throw new UnexpectedValueException('Invalid JWT - invalid signature encoding', 0, $e);
-        }
-
-        return ['header' => $header, 'payload' => $payload, 'signature' => $signature];
+        return [
+            'header' => get_class_vars($header),
+            'payload' => get_class_vars($payload),
+            'signature' => JWT::urlsafeB64Decode($signature)
+        ];
     }
 
     public static function validate(string $jwt): bool
     {
         try {
             self::parse($jwt);
-
             return true;
-        } catch (UnexpectedValueException $exception) {
+        } catch (UnexpectedValueException|InvalidArgumentException $exception) {
             return false;
         }
     }

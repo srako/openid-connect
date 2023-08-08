@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Srako\OpenIDConnect;
 
 use Srako\OpenIDConnect\Param\Params;
-use Jose\Component\Core\JWK;
-use Jose\Component\Core\JWKSet;
 
 final class ProviderMetadata extends Params
 {
@@ -50,9 +48,9 @@ final class ProviderMetadata extends Params
 
     /**
      * @param array<string, mixed> $metadata
-     * @param JWKSet<JWK>|null $jwks
+     * @param array|null $jwks
      */
-    public function __construct(array $metadata, ?JWKSet $jwks = null)
+    public function __construct(array $metadata, ?array $jwks = null)
     {
         parent::__construct($metadata);
         $this->jwks = $jwks;
@@ -266,9 +264,9 @@ final class ProviderMetadata extends Params
     }
 
     /**
-     * @return JWKSet<JWK>|null
+     * @return array|null
      */
-    public function jwks(): ?JWKSet
+    public function jwks(): ?array
     {
         return $this->jwks;
     }
