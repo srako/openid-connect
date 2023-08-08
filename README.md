@@ -7,7 +7,7 @@ PHP implementation of https://openid.net/specs/openid-connect-core-1_0.html
 Via [Composer](https://getcomposer.org/)
 
 ```bash
-$ composer require digitalcz/openid-connect
+$ composer require srako/openid-connect
 ```
 
 ## Usage
@@ -16,8 +16,8 @@ $ composer require digitalcz/openid-connect
 #### Using the OIDC discovery endpoint
 
 ```php
-use DigitalCz\OpenIDConnect\ClientMetadata;
-use DigitalCz\OpenIDConnect\ClientFactory;
+use Srako\OpenIDConnect\ClientMetadata;
+use Srako\OpenIDConnect\ClientFactory;
 
 $issuerUrl = 'https://example.com';
 $clientMetadata = new ClientMetadata('clientid', 'clientsecret', 'https://example.com/callback');
@@ -28,12 +28,12 @@ $client = ClientFactory::create($issuerUrl, $clientMetadata);
 <summary>Manually</summary>
 
 ```php
-use DigitalCz\OpenIDConnect\Client;
-use DigitalCz\OpenIDConnect\ClientMetadata;
-use DigitalCz\OpenIDConnect\Config;
-use DigitalCz\OpenIDConnect\Http\HttpClientFactory;
-use DigitalCz\OpenIDConnect\Token\TokenVerifierFactory;
-use DigitalCz\OpenIDConnect\ProviderMetadata;
+use Srako\OpenIDConnect\Client;
+use Srako\OpenIDConnect\ClientMetadata;
+use Srako\OpenIDConnect\Config;
+use Srako\OpenIDConnect\Http\HttpClientFactory;
+use Srako\OpenIDConnect\Token\TokenVerifierFactory;
+use Srako\OpenIDConnect\ProviderMetadata;
 
 $clientMetadata = new ClientMetadata('clientid', 'clientsecret', 'https://example.com/callback');
 $providerMetadata = new ProviderMetadata([
@@ -51,7 +51,7 @@ $client = new Client($config, HttpClientFactory::create());
 #### Step 1 - Redirect the user to authorization endpoint
 
 ```php
-use DigitalCz\OpenIDConnect\Param\AuthorizationParams;
+use Srako\OpenIDConnect\Param\AuthorizationParams;
 
 $state = bin2hex(random_bytes(8));
 $_SESSION['oauth_state'] = $state;
@@ -69,8 +69,8 @@ exit();
 #### Step 2 - Handle callback and exchange code for tokens
 
 ```php
-use DigitalCz\OpenIDConnect\Param\CallbackParams;
-use DigitalCz\OpenIDConnect\Param\CallbackChecks;
+use Srako\OpenIDConnect\Param\CallbackParams;
+use Srako\OpenIDConnect\Param\CallbackChecks;
 
 $tokens = $client->handleCallback(
     new CallbackParams($_GET),
@@ -81,8 +81,8 @@ $tokens = $client->handleCallback(
 ### Client Credentials flow
 
 ```php
-use DigitalCz\OpenIDConnect\Grant\ClientCredentials;
-use DigitalCz\OpenIDConnect\Param\TokenParams;
+use Srako\OpenIDConnect\Grant\ClientCredentials;
+use Srako\OpenIDConnect\Param\TokenParams;
 
 $tokens = $client->requestTokens(
     new TokenParams(
