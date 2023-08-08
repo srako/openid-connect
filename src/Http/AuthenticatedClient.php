@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Srako\OpenIDConnect\Http;
 
-use Srako\OpenIDConnect\Client;
-use Srako\OpenIDConnect\Token\Tokens;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Srako\OpenIDConnect\Client;
+use Srako\OpenIDConnect\Token\Tokens;
 
 final class AuthenticatedClient implements ClientInterface
 {

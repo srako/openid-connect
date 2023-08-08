@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Srako\OpenIDConnect\Http;
 
-use Srako\OpenIDConnect\Exception\HttpException;
-use Srako\OpenIDConnect\Exception\RuntimeException;
-use Srako\OpenIDConnect\Util\Json;
 use JsonException;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -16,6 +13,9 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
+use Srako\OpenIDConnect\Exception\HttpException;
+use Srako\OpenIDConnect\Exception\RuntimeException;
+use Srako\OpenIDConnect\Util\JWT;
 
 final class HttpClient implements ClientInterface, RequestFactoryInterface, UriFactoryInterface, StreamFactoryInterface
 {
@@ -94,7 +94,7 @@ final class HttpClient implements ClientInterface, RequestFactoryInterface, UriF
     public function parseResponse(ResponseInterface $response): array
     {
         try {
-            return Json::decode((string)$response->getBody());
+            return JWT::jsonToArray((string)$response->getBody());
         } catch (JsonException $e) {
             throw new RuntimeException('Unable to parse response: ' . $e->getMessage(), 0, $e);
         }

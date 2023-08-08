@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Srako\OpenIDConnect\Token;
 
 use Srako\OpenIDConnect\JOSE\ClaimsChecker;
-use Srako\OpenIDConnect\JOSE\JOSEFactory;
 use Srako\OpenIDConnect\JOSE\SignatureChecker;
 use Srako\OpenIDConnect\ProviderMetadata;
 

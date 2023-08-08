@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Srako\OpenIDConnect\JOSE;
 
-use Srako\OpenIDConnect\Exception\AuthorizationException;
-use Srako\OpenIDConnect\Param\ClaimsChecks;
 use Jose\Component\Checker\ClaimCheckerManager;
 use Jose\Component\Checker\InvalidClaimException;
 use Jose\Component\Checker\MissingMandatoryClaimException;
+use Srako\OpenIDConnect\Exception\AuthorizationException;
+use Srako\OpenIDConnect\Param\ClaimsChecks;
 
 final class ClaimsChecker implements ClaimsCheckerInterface
 {

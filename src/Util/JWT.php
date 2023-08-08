@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Srako\OpenIDConnect\Util;
 
 use InvalidArgumentException;
+use JsonException;
 use UnexpectedValueException;
 
 final class JWT extends \Firebase\JWT\JWT
@@ -73,5 +74,17 @@ final class JWT extends \Firebase\JWT\JWT
     public static function claim(string $jwt, string $claim)
     {
         return self::claims($jwt)[$claim] ?? null;
+    }
+
+    public static function jsonToArray(string $input): array
+    {
+        $obj = \json_decode($input, true, 512, JSON_BIGINT_AS_STRING);
+
+        if (\json_last_error()) {
+            throw new JsonException(\json_last_error_msg());
+        } elseif ($obj === null && $input !== 'null') {
+            throw new JsonException('Null result with non-null input');
+        }
+        return $obj;
     }
 }

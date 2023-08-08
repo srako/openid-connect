@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Srako\OpenIDConnect\Discovery;
 
-use Srako\OpenIDConnect\ProviderMetadata;
 use Psr\SimpleCache\CacheInterface;
+use Srako\OpenIDConnect\ProviderMetadata;
 
 final class CachedDiscoverer implements Discoverer
 {

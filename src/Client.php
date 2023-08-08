@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Srako\OpenIDConnect;
 
+use Jose\Component\Checker\AudienceChecker;
+use Jose\Component\Checker\ExpirationTimeChecker;
+use Jose\Component\Checker\IssuedAtChecker;
+use Jose\Component\Checker\IssuerChecker;
+use Jose\Component\Checker\NotBeforeChecker;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\UriInterface;
 use Srako\OpenIDConnect\Authentication\ClientSecretBasic;
 use Srako\OpenIDConnect\Authentication\ClientSecretPost;
 use Srako\OpenIDConnect\Exception\AuthorizationException;
@@ -22,14 +30,6 @@ use Srako\OpenIDConnect\Param\TokenParams;
 use Srako\OpenIDConnect\Token\Tokens;
 use Srako\OpenIDConnect\Token\TokenVerifierFactory;
 use Srako\OpenIDConnect\Token\TokenVerifierInterface;
-use Jose\Component\Checker\AudienceChecker;
-use Jose\Component\Checker\ExpirationTimeChecker;
-use Jose\Component\Checker\IssuedAtChecker;
-use Jose\Component\Checker\IssuerChecker;
-use Jose\Component\Checker\NotBeforeChecker;
-use Psr\Http\Client\ClientExceptionInterface;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\UriInterface;
 
 final class Client
 {

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Srako\OpenIDConnect;
 
+use Psr\SimpleCache\CacheInterface;
 use Srako\OpenIDConnect\Discovery\DiscovererFactory;
 use Srako\OpenIDConnect\Http\HttpClient;
 use Srako\OpenIDConnect\Http\HttpClientFactory;
-use Psr\SimpleCache\CacheInterface;
 
 final class ClientFactory
 {
