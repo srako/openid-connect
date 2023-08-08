@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Srako\OpenIDConnect;
 
+use Firebase\JWT\JWK;
 use Srako\OpenIDConnect\Param\Params;
 
 final class ProviderMetadata extends Params
@@ -46,6 +47,11 @@ final class ProviderMetadata extends Params
     public const OP_POLICY_URI = 'op_policy_uri';
     public const OP_TOS_URI = 'op_tos_uri';
 
+    /**
+     * jwks缓存
+     * @var array|null
+     */
+    private array $jwks;
     /**
      * @param array<string, mixed> $metadata
      * @param array|null $jwks
@@ -268,6 +274,6 @@ final class ProviderMetadata extends Params
      */
     public function jwks(): ?array
     {
-        return $this->jwks;
+        return JWK::parseKeySet($this->jwks);
     }
 }
