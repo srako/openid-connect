@@ -36,8 +36,8 @@ final class JWT extends \Firebase\JWT\JWT
         }
 
         return [
-            'header' => get_class_vars($header),
-            'payload' => get_class_vars($payload),
+            'header' => get_object_vars($header),
+            'payload' => get_object_vars($payload),
             'signature' => JWT::urlsafeB64Decode($signature)
         ];
     }
