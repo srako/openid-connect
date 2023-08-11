@@ -17,7 +17,7 @@ final class Claims extends Params
      */
     public static function fromClass(stdClass $payload): self
     {
-        return new self(get_object_vars($payload));
+        return new self(json_decode(json_encode($payload), true));
     }
 
     public static function fromToken(string $token): self

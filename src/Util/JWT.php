@@ -26,18 +26,18 @@ final class JWT extends \Firebase\JWT\JWT
         [$header, $payload, $signature] = $parts;
 
         $headerRaw = JWT::urlsafeB64Decode($header);
-        if (null === ($header = JWT::jsonDecode($headerRaw))) {
+        if (null === ($header = self::jsonToArray($headerRaw))) {
             throw new UnexpectedValueException('Invalid header encoding');
         }
 
         $payloadRaw = JWT::urlsafeB64Decode($payload);
-        if (null === ($payload = JWT::jsonDecode($payloadRaw))) {
+        if (null === ($payload = self::jsonToArray($payloadRaw))) {
             throw new UnexpectedValueException('Invalid claims encoding');
         }
 
         return [
-            'header' => get_object_vars($header),
-            'payload' => get_object_vars($payload),
+            'header' => $header,
+            'payload' => $payload,
             'signature' => JWT::urlsafeB64Decode($signature)
         ];
     }
