@@ -32,7 +32,8 @@ final class AuthenticatedClient implements ClientInterface
         $this->tokens = $this->client->refreshTokens($this->tokens);
 
         return $this->httpClient->sendRequest(
-            $request->withHeader('Authorization', "Bearer {$this->tokens->accessToken()}"),
+            $request->withHeader('Authorization', "Bearer {$this->tokens->accessToken()}")
+                ->withHeader('X-Client-Id', $this->client->getConfig()->clientMetadata()->id()),
         );
     }
 }
