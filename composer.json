@@ -29,12 +29,17 @@
     "psr/simple-cache": "^1.0||^2.0||^3.0",
     "web-token/jwt-checker": "^2.2"
   },
+  "require-dev": {
+    "guzzlehttp/guzzle": "^7.8"
+  },
   "autoload": {
     "psr-4": {
       "Srako\\OpenIDConnect\\": "src"
-    }
+    },
+    "files": [
+      "src/Util/helpers.php"
+    ]
   },
-
   "config": {
     "sort-packages": true,
     "allow-plugins": {

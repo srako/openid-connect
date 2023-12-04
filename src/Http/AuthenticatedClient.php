@@ -33,7 +33,22 @@ final class AuthenticatedClient implements ClientInterface
 
         return $this->httpClient->sendRequest(
             $request->withHeader('Authorization', "Bearer {$this->tokens->accessToken()}")
+                ->withHeader('Accept', 'application/json')
                 ->withHeader('X-Client-Id', $this->client->getConfig()->clientMetadata()->id()),
         );
+    }
+
+    public function httpClient(): HttpClient
+    {
+        return $this->httpClient;
+    }
+    public function client(): Client
+    {
+        return $this->client;
+    }
+
+    public function tokens(): Tokens
+    {
+        return $this->tokens;
     }
 }

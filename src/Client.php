@@ -12,6 +12,7 @@ use Jose\Component\Checker\NotBeforeChecker;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
+use Psr\SimpleCache\CacheInterface;
 use Srako\OpenIDConnect\Authentication\ClientSecretBasic;
 use Srako\OpenIDConnect\Authentication\ClientSecretPost;
 use Srako\OpenIDConnect\Exception\AuthorizationException;
@@ -27,6 +28,7 @@ use Srako\OpenIDConnect\Param\CallbackChecks;
 use Srako\OpenIDConnect\Param\CallbackParams;
 use Srako\OpenIDConnect\Param\ClaimsChecks;
 use Srako\OpenIDConnect\Param\TokenParams;
+use Srako\OpenIDConnect\Permission\PermissionFactory;
 use Srako\OpenIDConnect\Token\Tokens;
 use Srako\OpenIDConnect\Token\TokenVerifierFactory;
 use Srako\OpenIDConnect\Token\TokenVerifierInterface;
@@ -34,12 +36,15 @@ use Srako\OpenIDConnect\Token\TokenVerifierInterface;
 final class Client
 {
     private Config $config;
+    private ?CacheInterface $cache;
     private HttpClient $httpClient;
 
-    public function __construct(Config $config, HttpClient $httpClient)
+    public function __construct(Config $config, HttpClient $httpClient, ?CacheInterface $cache = null
+    )
     {
-        $this->httpClient = $httpClient;
         $this->config = $config;
+        $this->cache = $cache;
+        $this->httpClient = $httpClient;
     }
 
     /**
@@ -194,6 +199,10 @@ final class Client
         return $result;
     }
 
+    public function permission(Tokens $tokens)
+    {
+        return PermissionFactory::create($this->getAuthenticatedClient($tokens), $this->cache);
+    }
 
     public function getAuthenticatedClient(Tokens $tokens): AuthenticatedClient
     {

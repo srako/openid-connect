@@ -23,6 +23,6 @@ final class ClientFactory
 
         $providerMetadata = $discoverer->discover($issuerUrl);
         $config = new Config($providerMetadata, $clientMetadata);
-        return new Client($config, $httpClient);
+        return new Client($config, $httpClient, $cache);
     }
 }
