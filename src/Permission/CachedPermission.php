@@ -19,6 +19,7 @@ class CachedPermission extends HttpPermission
 {
 
     private CacheInterface $cache;
+    private string $sub;
     private string $jti;
     private int $ttl;
 
@@ -32,6 +33,9 @@ class CachedPermission extends HttpPermission
 
     public function can($method, $route): bool
     {
+        if (!$this->sub) {
+            return true;
+        }
         $userinfo = $this->userinfo();
         if ($userinfo['is_administrator']) {
             return true;
@@ -88,6 +92,7 @@ class CachedPermission extends HttpPermission
     private function introspection()
     {
         $claims = $this->authenticatedClient->client()->handleEvent($this->authenticatedClient->tokens()->idToken());
+        $this->sub = $claims->getString('sub');
         $this->jti = $claims->getString('jti');
         $this->ttl = $claims->getInt('exp') - time() - 60;
 
