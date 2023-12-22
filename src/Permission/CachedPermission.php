@@ -137,4 +137,13 @@ class CachedPermission extends HttpPermission
         }
     }
 
+    public function logout(): void
+    {
+        $this->cache->deleteMultiple([
+            'oidc_userinfo_' . $this->jti,
+            'oidc_permission_' . $this->jti,
+            'oidc_data_permission_' . $this->jti,
+        ]);
+        parent::logout();
+    }
 }

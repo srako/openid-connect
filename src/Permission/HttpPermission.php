@@ -92,4 +92,19 @@ class HttpPermission implements Permission
             throw new AuthorizationException('Data Permission request client error: ' . $e->getMessage(), 0, $e);
         }
     }
+
+    public function logout(): void
+    {
+        $request = $this->authenticatedClient
+            ->httpClient()
+            ->createRequest(
+                'GET', $this->providerMetadata->endSessionEndpoint() . '?id_token_hint=' .
+                $this->authenticatedClient->tokens()->idToken()
+            );
+        try {
+            $this->authenticatedClient->sendRequest($request);
+        } catch (ClientExceptionInterface $e) {
+            throw new AuthorizationException('Data Permission request client error: ' . $e->getMessage(), 0, $e);
+        }
+    }
 }

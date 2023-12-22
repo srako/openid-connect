@@ -34,4 +34,10 @@ interface Permission
      * @return array
      */
     public function dataPermissions(): array;
+
+    /**
+     * 用户退出登陆
+     * @return void
+     */
+    public function logout(): void;
 }
