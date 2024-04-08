@@ -78,13 +78,19 @@ class HttpPermission implements Permission
 
     /**
      * 获取用户的数据权限
+     * @param string|null $route
+     * @param string|null $method
      * @return array
      */
-    public function dataPermissions(): array
+    public function dataPermissions(string $route = null, string $method = null): array
     {
+        $query = '';
+        if ($route && $method) {
+            $query = $this->authenticatedClient->httpClient()->buildQueryString(compact('route', 'method'));
+        }
         $request = $this->authenticatedClient
             ->httpClient()
-            ->createRequest('GET', $this->providerMetadata->issuer() . '/api/user/data_permission');
+            ->createRequest('GET', $this->providerMetadata->issuer() . '/api/user/data_permission?' . $query);
         try {
             $response = $this->authenticatedClient->sendRequest($request);
             return $this->authenticatedClient->httpClient()->parseResponse($response);

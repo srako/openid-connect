@@ -31,9 +31,11 @@ interface Permission
 
     /**
      * 获取用户的数据权限
+     * @param string|null $route 路由下的数据权限
+     * @param string|null $method 路由下的数据权限
      * @return array
      */
-    public function dataPermissions(): array;
+    public function dataPermissions(string $route = null, string $method = null): array;
 
     /**
      * 用户退出登陆

@@ -54,37 +54,36 @@ class CachedPermission extends HttpPermission
         return false;
     }
 
-    public function dataPermissions(): array
+    public function dataPermissions(string $route = null, string $method = null): array
     {
-        $key = 'oidc_data_permission_' . $this->jti;
-        if ($dataPermissions = $this->cache->get($key)) {
+        $key = 'data_permission_' . $route.'_'.$method;
+        if ($dataPermissions = $this->getCache($key)) {
             return $dataPermissions;
         }
-        $dataPermissions = parent::dataPermissions();
-        $this->cache->set($key, $dataPermissions, $this->ttl);
+        $dataPermissions = parent::dataPermissions($route, $method);
+        $this->setCache($key, $dataPermissions);
         return $dataPermissions;
     }
 
     public function permissions(): array
     {
-        $key = 'oidc_permission_' . $this->jti;
-        if ($permissions = $this->cache->get($key)) {
+        $key = 'permission' ;
+        if ($permissions = $this->getCache($key)) {
             return $permissions;
         }
-
         $permissions = parent::permissions();
-        $this->cache->set($key, $permissions, $this->ttl);
+        $this->setCache($key, $permissions);
         return $permissions;
     }
 
     public function userinfo(): array
     {
-        $key = 'oidc_userinfo_' . $this->jti;
-        if ($userinfo = $this->cache->get($key)) {
+        $key = 'userinfo' ;
+        if ($userinfo = $this->getCache($key)) {
             return $userinfo;
         }
         $userinfo = parent::userinfo();
-        $this->cache->set($key, $userinfo, $this->ttl);
+        $this->setCache($key, $userinfo);
         return $userinfo;
     }
 
@@ -120,30 +119,53 @@ class CachedPermission extends HttpPermission
                 return;
             }
             // 删除所有缓存
-            $this->cache->deleteMultiple([
-                'oidc_userinfo_' . $this->jti,
-                'oidc_permission_' . $this->jti,
-                'oidc_data_permission_' . $this->jti,
-            ]);
+            $this->clearCache();
             throw new AuthorizationException('Introspection request client error: ' . $result['error'] ?? '', 0);
         } catch (ClientExceptionInterface $e) {
             // 删除所有缓存
-            $this->cache->deleteMultiple([
-                'oidc_userinfo_' . $this->jti,
-                'oidc_permission_' . $this->jti,
-                'oidc_data_permission_' . $this->jti,
-            ]);
+            $this->clearCache();
             throw new AuthorizationException('Introspection request client error: ' . $e->getMessage(), 0, $e);
         }
     }
 
     public function logout(): void
     {
-        $this->cache->deleteMultiple([
-            'oidc_userinfo_' . $this->jti,
-            'oidc_permission_' . $this->jti,
-            'oidc_data_permission_' . $this->jti,
-        ]);
+        $this->clearCache();
         parent::logout();
+    }
+
+    /**
+     * 增加缓存，并且绑定缓存至jti
+     * @param $key
+     * @param $value
+     * @return void
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    private function setCache($key, $value)
+    {
+        $key = 'oidc_' . md5($key) . '_' . $this->jti;
+        $this->cache->set($key, $value, $this->ttl);
+
+        // 获取已经存在的缓存键值
+        $cacheKeys = $this->cache->get('oidc_' . $this->jti);
+        if ($cacheKeys) {
+            $cacheKeys .= ',' . $key;
+        } else {
+            $cacheKeys = $key;
+        }
+        $this->cache->set('oidc_' . $this->jti, $cacheKeys, $this->ttl);
+    }
+
+    private function getCache($key)
+    {
+        return $this->cache->get('oidc_' . md5($key) . '_' . $this->jti);
+    }
+
+    private function clearCache()
+    {
+        $cacheKeys = $this->cache->get('oidc_' . $this->jti);
+        if($cacheKeys){
+            $this->cache->deleteMultiple(explode(',', $cacheKeys));
+        }
     }
 }
