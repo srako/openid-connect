@@ -167,5 +167,6 @@ class CachedPermission extends HttpPermission
         if($cacheKeys){
             $this->cache->deleteMultiple(explode(',', $cacheKeys));
         }
+        $this->cache->delete('oidc_' . $this->jti);
     }
 }
