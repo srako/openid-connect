@@ -32,6 +32,7 @@ use Srako\OpenIDConnect\Permission\PermissionFactory;
 use Srako\OpenIDConnect\Token\Tokens;
 use Srako\OpenIDConnect\Token\TokenVerifierFactory;
 use Srako\OpenIDConnect\Token\TokenVerifierInterface;
+use Srako\OpenIDConnect\Util\SystemClock;
 
 final class Client
 {
@@ -64,14 +65,15 @@ final class Client
      */
     public function handleEvent(string $tokenString): Claims
     {
+        $clock = new SystemClock();
         $claimsChecks = new ClaimsChecks(
             ['aud', 'exp', 'iat', 'iss', 'sub'],
             [
                 new IssuerChecker([$this->getProviderMetadata()->issuer()]),
                 new AudienceChecker($this->getClientMetadata()->id()),
-                new ExpirationTimeChecker(10),
-                new IssuedAtChecker(10),
-                new NotBeforeChecker(10),
+                new ExpirationTimeChecker($clock, 10),
+                new IssuedAtChecker($clock, 10),
+                new NotBeforeChecker($clock, 10),
             ],
         );
         $this->createTokenVerifier()->verify($tokenString, $claimsChecks);
@@ -98,14 +100,15 @@ final class Client
         $tokens = $this->requestTokens($tokenParams);
 
         if ($tokens->idToken() !== null) {
+            $clock = new SystemClock();
             $claimsChecks = new ClaimsChecks(
                 ['aud', 'exp', 'iat', 'iss', 'sub'],
                 [
                     new IssuerChecker([$this->getProviderMetadata()->issuer()]),
                     new AudienceChecker($this->getClientMetadata()->id()),
-                    new ExpirationTimeChecker(10),
-                    new IssuedAtChecker(10),
-                    new NotBeforeChecker(10),
+                    new ExpirationTimeChecker($clock, 10),
+                    new IssuedAtChecker($clock, 10),
+                    new NotBeforeChecker($clock, 10),
                     new NonceChecker($checks->nonce()),
                 ],
             );
