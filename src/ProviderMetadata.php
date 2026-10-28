@@ -56,7 +56,7 @@ final class ProviderMetadata extends Params
      * @param array<string, mixed> $metadata
      * @param array|null $jwks
      */
-    public function __construct(array $metadata, ?array $jwks = null)
+    public function __construct(array $metadata, array $jwks = [])
     {
         parent::__construct($metadata);
         $this->jwks = $jwks;

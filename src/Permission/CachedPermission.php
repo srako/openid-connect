@@ -54,7 +54,7 @@ class CachedPermission extends HttpPermission
         return false;
     }
 
-    public function dataPermissions(string $route = null, string $method = null): array
+    public function dataPermissions(?string $route = null, ?string $method = null): array
     {
         $key = 'data_permission_' . $route.'_'.$method;
         if ($dataPermissions = $this->getCache($key)) {

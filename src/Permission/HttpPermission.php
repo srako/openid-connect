@@ -82,7 +82,7 @@ class HttpPermission implements Permission
      * @param string|null $method
      * @return array
      */
-    public function dataPermissions(string $route = null, string $method = null): array
+    public function dataPermissions(?string $route = null, ?string $method = null): array
     {
         $query = '';
         if ($route && $method) {

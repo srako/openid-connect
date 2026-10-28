@@ -35,7 +35,7 @@ interface Permission
      * @param string|null $method 路由下的数据权限
      * @return array
      */
-    public function dataPermissions(string $route = null, string $method = null): array;
+    public function dataPermissions(?string $route = null, ?string $method = null): array;
 
     /**
      * 用户退出登陆
